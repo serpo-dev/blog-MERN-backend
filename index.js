@@ -19,16 +19,30 @@ mongoose
 const app = express();
 app.use(express.json()); // need to read json files in requests
 
-app.get('/auth/me', checkAuth, (req, res) => {
+app.get('/auth/me', checkAuth, async (req, res) => {
     try {
-        res
-            .json({
-                success: true
-            });
-    } catch (err) {
+        const user = await UserModel.findById(req.userId);
 
+        if (!user) {
+            res
+                .status(500)
+                .json({
+                    message: 'The user wasn\'t found'
+                });
+        };
+
+        const { passwordHash, ...userData } = user._doc;
+        res.json(userData);
+
+    } catch (err) {
+        console.log(err);
+        res
+            .status(500)
+            .json({
+                message: 'You don\'t authorize.'
+            });
     };
-})
+});
 
 app.post('/auth/login', async (req, res) => {
     try {
@@ -59,7 +73,6 @@ app.post('/auth/login', async (req, res) => {
         );
 
         const { passwordHash, ...userData } = user._doc;
-
         res.json({
             ...userData,
             token
@@ -105,13 +118,7 @@ app.post('/auth/registration', registerValidation, async (req, res) => {
             }
         );
 
-        // destructuration to hide 'passwordHash' at a response
-        const {
-            passwordHash,
-            ...userData
-        } = user._doc;
-
-        // response
+        const { passwordHash, ...userData } = user._doc;
         res.json({
             ...userData,
             token
