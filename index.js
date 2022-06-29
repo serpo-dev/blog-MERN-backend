@@ -22,7 +22,7 @@ app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/registration', registerValidation, UserController.register);
 
 
-// app.get('/posts', PostController.getAll);
+app.get('/posts', PostController.getAll);
 // app.get('/posts/:id', PostController.getOne);
 app.post('/posts', checkAuth, postCreateValidation, PostController.create);
 // app.remove('/posts', PostController.remove);

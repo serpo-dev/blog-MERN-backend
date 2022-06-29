@@ -9,6 +9,7 @@ const PostSchema = mongoose.Schema(
         text: {
             type: String,
             required: true,
+            unique: false
         },
         tags: {
             type: Array,
