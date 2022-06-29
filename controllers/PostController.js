@@ -1,6 +1,3 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-
 import PostModel from '../models/Post.js';
 
 
@@ -52,7 +49,7 @@ export const getOne = async (req, res) => {
                     return res
                         .status(404)
                         .json({
-                            message: 'The article doesn\'t exist.'
+                            message: 'The post doesn\'t exist.'
                         });
                 };
 
@@ -64,7 +61,7 @@ export const getOne = async (req, res) => {
         res
             .status(500)
             .json({
-                message: 'Server can\'t get all posts'
+                message: 'Server can\'t process the request'
             });
     };
 };
@@ -92,3 +89,59 @@ export const create = async (req, res) => {
     };
 };
 
+export const remove = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        PostModel.findOneAndDelete(
+            {
+                _id: postId
+            },
+            (err, doc) => {
+                if (err) {
+                    return res
+                        .status(500)
+                        .json({
+                            message: 'Server can\'t delete a post'
+                        });
+                };
+
+                if (!doc) {
+                    return res
+                        .status(404)
+                        .json({
+                            message: 'The post doesn\'t exist.'
+                        });
+                };
+
+                res.json({
+                    success: true
+                });
+            }
+        );
+
+
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                message: 'Server can\'t process the request'
+            });
+    };
+};
+
+export const update = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        PostModel.findOneAndUpdate();
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                message: 'Server can\'t process the request'
+            });
+    };
+};
