@@ -22,6 +22,53 @@ export const getAll = async (req, res) => {
     };
 };
 
+export const getOne = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+
+        // 1 - что найти, 2 - что обновить, 3 - что вернуть
+        PostModel.findOneAndUpdate(
+            {
+                _id: postId
+            },
+            {
+                // syntax of mongo db helps to increment something 
+                $inc: { viewsCount: 1 }
+            },
+            {
+                returnDocument: 'after'
+            },
+            (err, doc) => {
+                if (err) {
+                    return res
+                        .status(500)
+                        .json({
+                            message: 'Server can\'t find one or update views counter'
+                        });
+                };
+
+                if (!doc) {
+                    return res
+                        .status(404)
+                        .json({
+                            message: 'The article doesn\'t exist.'
+                        });
+                };
+
+                res.json(doc);
+            }
+        );
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                message: 'Server can\'t get all posts'
+            });
+    };
+};
+
 export const create = async (req, res) => {
     try {
         const doc = new PostModel({
