@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import { registerValidation } from './validations/auth.js'
 import UserModel from './models/User.js'
+import checkAuth from './utils/checkAuth.js';
 
 
 mongoose
@@ -18,12 +19,23 @@ mongoose
 const app = express();
 app.use(express.json()); // need to read json files in requests
 
+app.get('/auth/me', checkAuth, (req, res) => {
+    try {
+        res
+            .json({
+                success: true
+            });
+    } catch (err) {
+
+    };
+})
+
 app.post('/auth/login', async (req, res) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email });
         if (!user) {
             return res
-                .status(404)
+                .status(400)
                 .json({ message: 'wrong login or password' });
         };
 
@@ -32,7 +44,7 @@ app.post('/auth/login', async (req, res) => {
 
         if (!isValidPass) {
             return res
-                .status(404)
+                .status(400)
                 .json({ message: 'wrong login or password' });
         };
 
