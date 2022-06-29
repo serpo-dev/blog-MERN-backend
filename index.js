@@ -22,7 +22,7 @@ app.post('/auth/login', async (req, res) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email });
         if (!user) {
-            return req
+            return res
                 .status(404)
                 .json({ message: 'wrong login or password' });
         };
@@ -31,9 +31,9 @@ app.post('/auth/login', async (req, res) => {
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash);
 
         if (!isValidPass) {
-            return req
+            return res
                 .status(404)
-                .jsom({ message: 'wrong login or password' });
+                .json({ message: 'wrong login or password' });
         };
 
         const token = jwt.sign(
@@ -55,7 +55,9 @@ app.post('/auth/login', async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).json({
+        res
+            .status(500)
+            .json({
                 message: 'Server can\'t authorize you'
             });
     };
