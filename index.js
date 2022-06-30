@@ -4,11 +4,8 @@ import multer from 'multer';
 
 import { registerValidation, loginValidation } from './validations/auth.js';
 import { postCreateOrUpdateValidation } from './validations/posts.js';
-import handleValidationsErrors from './utils/handleValidationsErrors.js';
-import checkAuth from './utils/checkAuth.js';
-import * as UserController from './controllers/UserController.js';
-import * as PostController from './controllers/PostController.js';
-
+import { handleValidationsErrors, checkAuth } from './utils/utils.js';
+import { UserController, PostController } from './controllers/controllers.js';
 
 mongoose
     .connect('mongodb+srv://yphwd:990615@cluster0.zdaa7kb.mongodb.net/blog?retryWrites=true&w=majority')
