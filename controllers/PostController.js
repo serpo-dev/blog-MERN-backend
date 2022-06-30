@@ -135,7 +135,38 @@ export const update = async (req, res) => {
     try {
         const postId = req.params.id;
 
-        PostModel.findOneAndUpdate();
+        PostModel.findOneAndUpdate(
+            {
+                _id: postId
+            },
+            {
+                title: req.body.title,
+                text: req.body.text,
+                tags: req.body.tags
+            },
+            {
+                returnDocument: 'after'
+            },
+            (err, doc) => {
+                if (err) {
+                    return res
+                        .status(500)
+                        .json({
+                            message: 'Server can\'t find one or update views counter'
+                        });
+                };
+
+                if (!doc) {
+                    return res
+                        .status(404)
+                        .json({
+                            message: 'The post doesn\'t exist.'
+                        });
+                };
+
+                res.json(doc);
+            }
+        );
 
     } catch (err) {
         res
