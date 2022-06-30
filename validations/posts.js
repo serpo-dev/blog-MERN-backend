@@ -2,7 +2,7 @@
 import { body } from 'express-validator';
 
 
-export const postCreateValidation = [
+export const postCreateOrUpdateValidation = [
     body('title', 'Length need to be at least 1 charachter').isLength({ min: 1 }).isString(),
     body('text', 'Length need to be at least 1 charachter').isLength({ min: 1 }).isString(),
     body('imageUrl', 'Your link does not look like any true link').optional().isString()

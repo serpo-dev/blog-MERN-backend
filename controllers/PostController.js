@@ -142,7 +142,9 @@ export const update = async (req, res) => {
             {
                 title: req.body.title,
                 text: req.body.text,
-                tags: req.body.tags
+                tags: req.body.tags,
+                imageUrl: req.body.imageUrl,
+                user: req.userId
             },
             {
                 returnDocument: 'after'
@@ -164,7 +166,9 @@ export const update = async (req, res) => {
                         });
                 };
 
-                res.json(doc);
+                res.json({
+                    success: true
+                });
             }
         );
 
