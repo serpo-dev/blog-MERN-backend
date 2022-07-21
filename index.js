@@ -9,7 +9,7 @@ import { handleValidationsErrors, checkAuth } from './utils/utils.js';
 import { UserController, PostController } from './controllers/controllers.js';
 
 mongoose
-    .connect('process.env.MONGODB_URI')
+    .connect(process.env.MONGODB_URI)
     .then(() => console.log('BD is OK'))
     .catch((err) => console.log('DB is not avaliable. Error type: ', err));
 
