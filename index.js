@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs'; // нужно для загрузки картинок , если нет папки uploads
 import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
@@ -16,6 +17,10 @@ mongoose
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+	if (!fs.existsSync('uploads')) {
+		fs.mkdirSync('uploads');
+	}
+
         cb(null, 'uploads');
         // 1 - не возвращает ошибок
         // 2 - загружает файлы в папку uploads
