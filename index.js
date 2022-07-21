@@ -9,7 +9,7 @@ import { handleValidationsErrors, checkAuth } from './utils/utils.js';
 import { UserController, PostController } from './controllers/controllers.js';
 
 mongoose
-    .connect('mongodb+srv://yphwd:990615@cluster0.zdaa7kb.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect('process.env.MONGODB_URI')
     .then(() => console.log('BD is OK'))
     .catch((err) => console.log('DB is not avaliable. Error type: ', err));
 
@@ -60,7 +60,7 @@ app.patch('/posts/:id', checkAuth, postCreateOrUpdateValidation, handleValidatio
 
 
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         console.log(`error: ${err}`)
     };
