@@ -43,7 +43,7 @@ app.get('/auth/me', checkAuth, UserController.getMe);
 app.post('/auth/login', loginValidation, handleValidationsErrors, UserController.login);
 app.post('/auth/registration', registerValidation, handleValidationsErrors, UserController.register);
 
-app.post('/upload', checkAuth, upload.single(), (req, res) => {
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({
         url: `./uploads/${req.file.originalname}`
     })
